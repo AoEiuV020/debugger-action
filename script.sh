@@ -20,6 +20,10 @@ fi
 [ -e ~/.ssh/id_rsa ] || ssh-keygen -t rsa -f ~/.ssh/id_rsa -q -N ""
 work_dir=$(dirname $0)
 [ -e ~/.ssh/authorized_keys ] || cp $work_dir/authorized_keys ~/.ssh/authorized_keys
+name=${GITHUB_REPOSITORY#*/}
+if [ -n "$name" ]; then
+    sed -i "s/tmate-session-name.*/tmate-session-name \"${name}\"/" $work_dir/.tmate.conf
+fi
 [ -e ~/.tmate.conf ] || cp $work_dir/.tmate.conf ~/.tmate.conf
 
 # Run deamonized tmate
